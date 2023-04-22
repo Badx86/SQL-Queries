@@ -1,4 +1,5 @@
-use `Chinook`; /*  HW1  */
+use `Chinook`; 
+/*  HW1  */
 -- 1. Покажите содержимое таблицы исполнителей (артистов)
 select * from artist;
 -- 2. Покажите фамилии и имена клиентов из города Лондон
@@ -30,7 +31,6 @@ select LastName, FirstName from customer where Country = 'USA' and Fax is null;
 select Address, PostalCode from customer where Email like '%gmail.com';
 -- 6. Покажите в алфавитном порядке все уникальные должности в компании.
 select distinct Title from employee order by Title;
-
 -- 7. Покажите самую короткую песню.
 select min(Milliseconds) from track;
 -- 8. Покажите название и длительность в секундах самой короткой песни. Столбец назвать sec.
@@ -61,7 +61,6 @@ select * from chinook.track where UnitPrice > 1;
 select * from chinook.track where UnitPrice <> 1.99;
 -- 19. Покажите  содержимое продаж. Вывести дату покупки, город в которую совершена продажа и стоимость покупки больше 2 долл. Стоимость покупки назвать как "Итог"
 select InvoiceDate,BillingCity, Total as итог from chinook.invoice where total > 2;
-
 -- 20. Как зовут работников-продавцов в компании? Показать фамилии и имена в одном столбце назвав FULL_NAME.
 select concat(LastName, ' ', FirstName) as FULL_NAME from chinook.employee;
 -- 21. Отобрать все треки, композиторами которых являются только Apocalyptica и AC/DC.
@@ -100,3 +99,23 @@ select Quantity, TrackId from invoiceline where TrackId in (422, 424, 426, 428, 
 select Name, TrackId, (select count(TrackId) from invoiceline where TrackId = track.TrackId) as total from track where Composer = 'Queen';
 -- 8. Посчитайте количество треков в каждом альбоме. В результате вывести имя альбома и кол-во треков.
 select Title, (select count(*) from track where track.AlbumId = album.AlbumId) as Track_count from album order by(Track_count);
+-- подзапрос 0 Покажите длительность самой короткой песни. Столбец назвать sec
+select Milliseconds as sec from chinook.track where Milliseconds = (select min(Milliseconds) from chinook.track);
+/*  HW4  */
+-- подзапрос 1 Покажите название и длительность в секундах самой короткой песни. Столбец назвать sec
+select name, Milliseconds/1000 as sec from chinook.track where Milliseconds = (select min(Milliseconds) from chinook.track);
+-- подзапрос 2 Покажите все счёт-фактуры, стоимость которых выше средней
+select * from chinook.invoice;
+select avg(total) from chinook.invoice;
+select customerId, InvoiceDate, BillingAddress, Total from chinook.invoice where total > (select avg(total) from chinook.invoice);
+-- подзапрос 3 Вывести все названия треков которые есть в счет-фактурах
+select * from chinook.invoiceline;
+select TrackId, Name from chinook.track where TrackId IN (select TrackId from chinook.invoiceline);
+select TrackId, Name from chinook.track where TrackId NOT IN (select TrackId from chinook.invoiceline);
+-- подзапрос 4 покажите имена всех сотрудников чьи имена совпадают с именами клиентов
+select * from chinook.employee;
+select * from chinook.customer;
+select FirstName from chinook.customer where (FirstName) IN (select FirstName from chinook.employee);
+-- подзапрос 5 Покажите имя, фамилию покупателя (номер 5) и общую сумму его заказов.
+select count(*), sum(total) as sum from chinook.invoice where CustomerId = 5;
+select firstname, lastname, (select sum(total) from chinook.invoice where CustomerId = chinook.customer.CustomerId) as sum from chinook.customer where CustomerId = 5;
