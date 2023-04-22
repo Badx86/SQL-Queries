@@ -1,5 +1,3 @@
-- [DB Dump1](https://drive.google.com/file/d/1qUI30AnVVB0byXb0nvNQXafYUBgmVykJ/view?usp=sharing)
-- [DB Dump2](https://drive.google.com/file/d/1dquvoKc55w2uxZNOHYQIEUTz8tGWSsWc/view?usp=sharing)
 -- 1. Выведите имя, фамилию, патронуса всех персонажей, у которых есть patronus или он известен
 SELECT fname, lname, patronus 
 FROM characters 
