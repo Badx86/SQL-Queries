@@ -1,5 +1,3 @@
-- [DataBase Dump](https://drive.google.com/file/d/1hETSZZ3jejX5snf_52SzC6H-9C2hfV4F/view?usp=sharing)
-
 use `Chinook`; /*  HW1  */
 -- 1. Покажите содержимое таблицы исполнителей (артистов)
 select * from artist;
